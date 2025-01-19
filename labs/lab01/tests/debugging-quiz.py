@@ -5,14 +5,14 @@ test = {
     {
       'cases': [
         {
-          'answer': '04c227bc171e79bdf2f704618b690d63',
+          'answer': 'h(x + y * 5)',
           'choices': [
             'f("hi")',
             'g(x + x, x)',
             'h(x + y * 5)'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': r"""
           In the following traceback, what is the most recent function call?
