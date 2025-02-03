@@ -36,7 +36,7 @@ def roll_dice(num_rolls, dice=six_sided):  # 投掷骰子的次数and一个回�
     # END PROBLEM 1
 
 
-def boar_brawl(player_score, opponent_score):
+def boar_brawl(player_score, opponent_score): #根据规则如果投掷0个骰子所返回的结果
     """Return the points scored by rolling 0 dice according to Boar Brawl.
 
     player_score:     The total score of the current player.
@@ -102,7 +102,7 @@ def is_prime(n):
         k += 1
     return True
 
-def num_factors(n):
+def num_factors(n): #计算n含有多少个因子
     """Return the number of factors of N, including 1 and N itself."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
@@ -114,7 +114,7 @@ def num_factors(n):
 
     # END PROBLEM 4
 
-def sus_points(score):
+def sus_points(score):  #如果因子是3或4，找到得分的下一个最小质数，否则直接返回原得分
     """Return the new score of a player taking into account the Sus Fuss rule."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
@@ -178,6 +178,13 @@ def play(strategy0, strategy1, update,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    while(score0 < goal and score1 < goal):
+        if(who == 0):
+            score0 = update(strategy0(score0, score1), score0, score1, dice)
+        else:
+            score1 = update(strategy1(score1, score0), score1, score0, dice)
+        who = 1 - who
+
     # END PROBLEM 5
     return score0, score1
 
@@ -203,6 +210,9 @@ def always_roll(n):
     assert n >= 0 and n <= 10
     # BEGIN PROBLEM 6
     "*** YOUR CODE HERE ***"
+    def roll(score, opponent_score):
+        return n
+    return roll
     # END PROBLEM 6
 
 
@@ -234,6 +244,12 @@ def is_always_roll(strategy, goal=GOAL):
     """
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    num = strategy(0, 0)
+    for i in range(goal):
+        for j in range(goal):
+            if(strategy(i, j) != num):
+                return False
+    return True
     # END PROBLEM 7
 
 
