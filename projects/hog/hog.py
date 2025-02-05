@@ -286,6 +286,16 @@ def max_scoring_num_rolls(dice=six_sided, samples_count=1000):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    index = 1
+    max_num = 0
+    for i in range(1, 11):
+        avg = make_averaged(roll_dice, samples_count)
+        num = avg(i, dice)
+        if num > max_num:
+            max_num = num
+            index = i
+    return index
+
     # END PROBLEM 9
 
 
@@ -330,7 +340,11 @@ def boar_strategy(score, opponent_score, threshold=11, num_rolls=6):
     points, and returns NUM_ROLLS otherwise. Ignore score and Sus Fuss.
     """
     # BEGIN PROBLEM 10
-    return num_rolls  # Remove this line once implemented.
+    sum = boar_brawl(score, opponent_score)
+    if sum >= threshold:
+        return 0
+    else :
+        return num_rolls
     # END PROBLEM 10
 
 
