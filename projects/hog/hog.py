@@ -351,7 +351,18 @@ def boar_strategy(score, opponent_score, threshold=11, num_rolls=6):
 def sus_strategy(score, opponent_score, threshold=11, num_rolls=6):
     """This strategy returns 0 dice when your score would increase by at least threshold."""
     # BEGIN PROBLEM 11
-    return num_rolls  # Remove this line once implemented.
+    score_boar = boar_brawl(score, opponent_score)
+    # print("DEBUG:",score_boar)
+    score_sus = sus_points(score + score_boar)
+    # print("DEBUG:",score_sus)
+    diff = score_sus - score
+    # print("DEBUG:",diff)
+    if(diff >= threshold):
+        return 0
+    else:
+        return num_rolls  # Remove this line once implemented.
+     
+        
     # END PROBLEM 11
 
 
@@ -361,7 +372,10 @@ def final_strategy(score, opponent_score):
     *** YOUR DESCRIPTION HERE ***
     """
     # BEGIN PROBLEM 12
-    return 6  # Remove this line once implemented.
+    if(score > 80 and score - opponent_score > 20):
+        return 0
+    else:
+        return 6 
     # END PROBLEM 12
 
 
