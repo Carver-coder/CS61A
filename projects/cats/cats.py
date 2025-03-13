@@ -9,8 +9,8 @@ from datetime import datetime
 # Phase 1 #
 ###########
 
-#pick函数的作用就是将根据要求筛选出符合要求的单词
-def pick(paragraphs, select, k): 
+
+def pick(paragraphs, select, k):    # 将根据要求筛选出符合要求的单词
     """Return the Kth paragraph from PARAGRAPHS for which SELECT called on the
     paragraph returns True. If there are fewer than K such paragraphs, return
     the empty string.
@@ -39,7 +39,7 @@ def pick(paragraphs, select, k):
     # END PROBLEM 1
 
 
-def about(subject):
+def about(subject): # 包含一个单词列表一个主题，含有哪个主题进行输出
     """Return a select function that returns whether
     a paragraph contains one of the words in SUBJECT.
 
@@ -70,7 +70,7 @@ def about(subject):
     # END PROBLEM 2
 
 
-def accuracy(typed, source):
+def accuracy(typed, source):    # 判断两个段落单词是否一致，并返回相似率，包含大小写
     """Return the accuracy (percentage of words typed correctly) of TYPED
     when compared to the prefix of SOURCE that was typed.
 
@@ -93,14 +93,32 @@ def accuracy(typed, source):
     >>> accuracy('', '')
     100.0
     """
-    typed_words = split(typed)
+    typed_words = split(typed)  # 将段落转换成单词列表的形式
     source_words = split(source)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    typed_num = len(typed_words)    # 首先计算出每个列表的长度
+    source_num = len(source_words)
+
+
+    if (typed_num == 0 and source_num == 0):    
+        return 100.0
+    elif (typed_num == 0 or source_num == 0):
+        return 0.0
+    
+    count = 0
+
+    for i in range(0, typed_num):  
+        if (i + 1) > source_num:
+            break
+        elif (typed_words[i] == source_words[i]):
+            count += 1
+    return count * 100 / typed_num
+    
     # END PROBLEM 3
 
 
-def wpm(typed, elapsed):
+def wpm(typed, elapsed): # 判断打字每分钟平均速度
     """Return the words-per-minute (WPM) of the TYPED string.
 
     Arguments:
@@ -115,6 +133,10 @@ def wpm(typed, elapsed):
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    typed_num = len(typed)  # 计算字符串长度
+    ans = 60 / elapsed 
+    return typed_num * ans / 5
+
     # END PROBLEM 4
 
 
