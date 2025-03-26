@@ -162,10 +162,25 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     'butter'
     >>> first_diff = lambda w1, w2, limit: (1 if w1[0] != w2[0] else 0) # Checks for matching first char
     >>> autocorrect("tosting", ["testing", "asking", "fasting"], first_diff, 10)
-    'testing'
+    'testing'   
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    min_diff = limit + 1
+    best_word = typed_word
+
+    for word in word_list:
+        if word == typed_word:
+            return typed_word
+        
+        diff = diff_function(typed_word, word, limit)
+
+        if (min_diff > abs(diff)):
+            min_diff = abs(diff)
+            best_word = word
+    return typed_word if min_diff > limit else best_word
+
+
     # END PROBLEM 5
 
 
@@ -192,7 +207,18 @@ def feline_fixes(typed, source, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+
+    def select(a, b, sum):
+        if sum > limit:
+            return float('inf')
+        if not a or not b:
+            return abs(len(a) - len(b))
+        if a[0] == b[0]:
+            return select(a[1:], b[1:], sum)
+        else:
+            return select(a[1:], b[1:], sum + 1) + 1
+    
+    return select(typed, source, 0)
     # END PROBLEM 6
 
 
@@ -216,23 +242,32 @@ def minimum_mewtations(typed, source, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, 'Remove this line'
-    if ___________: # Base cases should go here, you may add more base cases as needed.
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-    # Recursive cases should go below here
-    if ___________: # Feel free to remove or add additional cases
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-    else:
-        add = ... # Fill in these lines
-        remove = ...
-        substitute = ...
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
+    a = len(typed)
+    b = len(source)
+
+    #初始化
+    dp = [[0] * (b+1) for _ in range(a+1)]
+    for i in range(1, b+1):
+        dp[0][i] = i
+    for i in range(1, a+1):
+        dp[i][0] = i
+    
+    #执行判断
+    for i in range(0, a):
+        for j in range(0, b):
+            if typed[i] == source[j]:
+                dp[i+1][j+1] = dp[i][j]
+            else:
+                dp[i+1][j+1] = min(dp[i][j] + 1,
+                                   dp[i][j+1] + 1,
+                                   dp[i+1][j] + 1)
+                
+            # print("DEBUG:", dp[i+1][j+1],"  ",i,j)
+            # if dp[i][j] > limit and dp[i+1][j] > limit and dp[i][j+1] > limit:
+            #     return float("inf")
+    
+    return dp[a][b]
+
 
 
 def final_diff(typed, source, limit):
@@ -273,6 +308,16 @@ def report_progress(typed, source, user_id, upload):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    num = 0
+
+    for i in range(0, len(typed)):
+        if (typed[i] == source[i]):
+            num += 1
+        else:
+            break
+    rate = num / len(source)
+    upload({'id': user_id, 'progress': rate})
+    return rate
     # END PROBLEM 8
 
 
@@ -295,6 +340,17 @@ def time_per_word(words, timestamps_per_player):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    a = len(timestamps_per_player)
+    b = len(timestamps_per_player[0])
+    
+    tmp = [[0] * (b-1) for _ in range(0, a)]
+    # b-1 是x轴
+    # a   是y轴
+    for i in range(0, a):
+        for j in range(0, b-1):
+            tmp[i][j] = (timestamps_per_player[i][j+1] - timestamps_per_player[i][j])
+    
+    return match(words, tmp)
     # END PROBLEM 9
 
 
@@ -317,6 +373,18 @@ def fastest_words(match):
     word_indices = range(len(get_all_words(match)))    # contains an *index* for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    words = get_all_words(match)
+    times = get_all_times(match)
+
+    tmp = [[] for _ in player_indices]
+    for i in word_indices:
+        index = 0
+        for j in player_indices:
+            if(times[j][i] < times[index][i]):
+                index = j
+        tmp[index].append(words[i])
+    
+    return tmp
     # END PROBLEM 10
 
 
